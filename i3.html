@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weekly Pre-Scheduling</title>
+    <style>
+        /* Simple CSS for table layout */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        label {
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        select {
+            padding: 5px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            background-color: #f2f2f2;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #2c3e50;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #e8f5e9;
+        }
+        .team-row {
+            background-color: #e3f2fd;
+            font-weight: bold;
+        }
+        .total-row {
+            background-color: #ffe0b2;
+            font-weight: bold;
+            color: #bf360c;
+        }
+        input[type="time"] {
+            width: 90%;
+            padding: 3px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Weekly Pre-Scheduling</h2>
+
+    <!-- Week Selection Dropdown -->
+    <label for="weekSelect">Select Week:</label>
+    <select id="weekSelect" onchange="loadWeekData()">
+        <option value="">-- Select a Week --</option>
+        <option value="Week 15 (10 May 2020 - 16 May 2020)">Week 15 (10 May 2020 - 16 May 2020)</option>
+        <!-- Additional week options can be added here -->
+    </select>
+
+    <!-- Schedule Table -->
+    <div id="scheduleContainer"></div>
+
+    <script>
+        function loadWeekData() {
+            // Load the selected week's data and populate the table
+            const selectedWeek = document.getElementById("weekSelect").value;
+            if (selectedWeek) {
+                displayScheduleTable(selectedWeek);
+            } else {
+                document.getElementById("scheduleContainer").innerHTML = "";
+            }
+        }
+
+        function displayScheduleTable(week) {
+            // Dynamically create table structure for the selected week
+            const tableHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Sun 10 May</th>
+                            <th>Mon 11 May</th>
+                            <th>Tue 12 May</th>
+                            <th>Wed 13 May</th>
+                            <th>Thu 14 May</th>
+                            <th>Fri 15 May</th>
+                            <th>Sat 16 May</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Rows for teams and employees will be populated here -->
+                    </tbody>
+                </table>
+            `;
+            document.getElementById("scheduleContainer").innerHTML = tableHTML;
+
+            // Call function to populate team and employee rows
+            populateTeamRows();
+        }
+
+        function populateTeamRows() {
+            // Example of adding team rows and calculating totals
+            const tableBody = document.getElementById("tableBody");
+
+            // Teams and employees data (mock data)
+            const teams = ["Marketing Team", "Techno Team", "Support Team"];
+            const employees = {
+                "Marketing Team": ["Emp 1", "Emp 2", "Emp 3"],
+                "Techno Team": ["Emp 4", "Emp 5", "Emp 6"],
+                "Support Team": ["Emp 7", "Emp 8", "Emp 9"]
+            };
+
+            // Iterate over each team and populate rows
+            teams.forEach(team => {
+                // Add team total row
+                const teamRow = document.createElement("tr");
+                teamRow.classList.add("team-row");
+                teamRow.innerHTML = `<td><strong>${team}</strong></td>` +
+                    `<td>00:00</td><td>24:00</td><td>22:30</td><td>24:00</td><td>23:00</td><td>25:00</td><td>00:00</td><td>118:30</td>`;
+                tableBody.appendChild(teamRow);
+
+                // Add rows for each employee in the team
+                employees[team].forEach(emp => {
+                    const empRow = document.createElement("tr");
+                    empRow.innerHTML = `<td>${emp}</td>` +
+                        `<td><input type="time" value="00:00"></td>
+                         <td><input type="time" value="07:30"></td>
+                         <td><input type="time" value="07:00"></td>
+                         <td><input type="time" value="08:00"></td>
+                         <td><input type="time" value="08:00"></td>
+                         <td><input type="time" value="08:00"></td>
+                         <td><input type="time" value="00:00"></td>
+                         <td>00:00</td>`;
+                    tableBody.appendChild(empRow);
+                });
+            });
+
+            // Add total row for the entire table
+            const totalRow = document.createElement("tr");
+            totalRow.classList.add("total-row");
+            totalRow.innerHTML = `<td><strong>Total</strong></td>` +
+                `<td>00:00</td><td>72:00</td><td>67:30</td><td>72:00</td><td>69:00</td><td>75:00</td><td>00:00</td><td>354:00</td>`;
+            tableBody.appendChild(totalRow);
+        }
+    </script>
+</body>
+</html>
